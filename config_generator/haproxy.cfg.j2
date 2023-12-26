@@ -18,9 +18,9 @@ backend http_back
     server server{{ loop.index }} [{{ ip }}]:80 check inter 10s
     {%- endfor %}
 
-
 backend https_back
     balance random
     {%- for ip in ips %}
     server server{{ loop.index }} [{{ ip }}]:443 check-ssl verify none inter 10s
     {%- endfor %}
+
