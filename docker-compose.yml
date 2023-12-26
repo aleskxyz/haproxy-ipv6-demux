@@ -13,6 +13,7 @@ services:
     volumes:
     - /var/run/docker.sock:/var/run/docker.sock
     - ./haproxy:/usr/src/app/haproxy
+    - ./config_generator/haproxy.cfg.j2:/usr/src/app/haproxy.cfg.j2
     env_file:
     - config.env
     restart: always
