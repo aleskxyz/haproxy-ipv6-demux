@@ -1,0 +1,25 @@
+defaults
+    mode    tcp
+    timeout connect 5s
+    timeout client  50s
+    timeout server  50s
+
+frontend http_front
+    bind *:8080 v4v6
+    default_backend http_back
+
+frontend https_front
+    bind *:8443 v4v6
+    default_backend https_back
+
+backend http_back
+    balance random
+    {%- for ip in ips %}
+    server server{{ loop.index }} [{{ ip }}]:80 check inter 10s
+    {%- endfor %}
+
+backend https_back
+    balance random
+    {%- for ip in ips %}
+    server server{{ loop.index }} [{{ ip }}]:443 check-ssl verify none inter 10s
+    {%- endfor %}

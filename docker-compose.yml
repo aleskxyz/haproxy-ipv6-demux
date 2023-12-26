@@ -1,0 +1,26 @@
+version: '3'
+name: haproxy-ipv6-demux
+networks:
+  default:
+    driver: bridge
+    enable_ipv6: true
+    ipam:
+      config:
+      - subnet: fc11::10:0/112
+services:
+  config_generator:
+    build: ./config_generator
+    volumes:
+    - /var/run/docker.sock:/var/run/docker.sock
+    - ./haproxy:/usr/src/app/haproxy
+    env_file:
+    - config.env
+    restart: always
+  haproxy:
+    image: haproxy:2.8.0
+    volumes:
+    - ./haproxy:/usr/local/etc/haproxy
+    ports:
+    - 80:8080
+    - 443:8443
+    restart: always
