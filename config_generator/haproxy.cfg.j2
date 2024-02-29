@@ -1,9 +1,17 @@
+global
+    hard-stop-after 120m
+    close-spread-time 5m
 defaults
-    mode    tcp
+    mode tcp
+    option tcpka
+    clitcpka-cnt 10
+    clitcpka-idle 1s
+    clitcpka-intvl 1s
     timeout connect 5s
     timeout client  50s
     timeout server  50s
-
+    timeout client-fin 1s
+    timeout tunnel 50s
 frontend http_front
     bind *:8080 v4v6
     default_backend http_back
@@ -23,4 +31,3 @@ backend https_back
     {%- for ip in ips %}
     server server{{ loop.index }} [{{ ip }}]:443 check-ssl verify none inter 10s
     {%- endfor %}
-
